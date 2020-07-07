@@ -1,0 +1,254 @@
+[
+    {
+        "id": "3876a78a.6f5468",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "7be319b9.ac0bf8",
+        "type": "arduino out",
+        "z": "3876a78a.6f5468",
+        "name": "Red",
+        "pin": "2",
+        "state": "OUTPUT",
+        "arduino": "4390d162.8bfca",
+        "x": 770,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "4adf0c17.3ff524",
+        "type": "delay",
+        "z": "3876a78a.6f5468",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 420,
+        "y": 280,
+        "wires": [
+            [
+                "cb24a217.cc5cc"
+            ]
+        ]
+    },
+    {
+        "id": "dd552e80.a3b72",
+        "type": "delay",
+        "z": "3876a78a.6f5468",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 420,
+        "y": 360,
+        "wires": [
+            [
+                "5a0fa5a2.6cb38c"
+            ]
+        ]
+    },
+    {
+        "id": "a51aaed3.a1fe8",
+        "type": "arduino out",
+        "z": "3876a78a.6f5468",
+        "name": "Yellow",
+        "pin": "3",
+        "state": "OUTPUT",
+        "arduino": "4390d162.8bfca",
+        "x": 770,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "91e4dec.360de2",
+        "type": "arduino out",
+        "z": "3876a78a.6f5468",
+        "name": "Green",
+        "pin": "4",
+        "state": "OUTPUT",
+        "arduino": "4390d162.8bfca",
+        "x": 770,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "30d7776.6e0e288",
+        "type": "function",
+        "z": "3876a78a.6f5468",
+        "name": "map RED/YELLOW/GREEN to pins",
+        "func": "return [\n    {payload: +(msg.payload === \"RED\")},\n    {payload: +(msg.payload === \"YELLOW\")},\n    {payload: +(msg.payload === \"GREEN\")}\n];",
+        "outputs": 3,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 480,
+        "y": 520,
+        "wires": [
+            [
+                "7be319b9.ac0bf8"
+            ],
+            [
+                "a51aaed3.a1fe8"
+            ],
+            [
+                "91e4dec.360de2"
+            ]
+        ]
+    },
+    {
+        "id": "8a3181e1.5db5e",
+        "type": "trigger",
+        "z": "3876a78a.6f5468",
+        "name": "Send GREEN",
+        "op1": "GREEN",
+        "op2": "",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "1",
+        "extend": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 2,
+        "x": 180,
+        "y": 280,
+        "wires": [
+            [
+                "30d7776.6e0e288"
+            ],
+            [
+                "4adf0c17.3ff524"
+            ]
+        ]
+    },
+    {
+        "id": "cb24a217.cc5cc",
+        "type": "trigger",
+        "z": "3876a78a.6f5468",
+        "name": "Send YELLOW",
+        "op1": "YELLOW",
+        "op2": "",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "1",
+        "extend": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 2,
+        "x": 180,
+        "y": 360,
+        "wires": [
+            [
+                "30d7776.6e0e288"
+            ],
+            [
+                "dd552e80.a3b72"
+            ]
+        ]
+    },
+    {
+        "id": "5a0fa5a2.6cb38c",
+        "type": "trigger",
+        "z": "3876a78a.6f5468",
+        "name": "Send RED",
+        "op1": "RED",
+        "op2": "",
+        "op1type": "str",
+        "op2type": "str",
+        "duration": "1",
+        "extend": false,
+        "units": "ms",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 2,
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "30d7776.6e0e288"
+            ],
+            [
+                "bc167579.b44ab8"
+            ]
+        ]
+    },
+    {
+        "id": "bc167579.b44ab8",
+        "type": "delay",
+        "z": "3876a78a.6f5468",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 420,
+        "y": 440,
+        "wires": [
+            [
+                "8a3181e1.5db5e"
+            ]
+        ]
+    },
+    {
+        "id": "1e5d413e.52676f",
+        "type": "inject",
+        "z": "3876a78a.6f5468",
+        "name": "Start Loop",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "0",
+        "topic": "",
+        "payload": "",
+        "payloadType": "str",
+        "x": 170,
+        "y": 220,
+        "wires": [
+            [
+                "8a3181e1.5db5e"
+            ]
+        ]
+    },
+    {
+        "id": "4390d162.8bfca",
+        "type": "arduino-board",
+        "z": "",
+        "device": "COM6"
+    }
+]
