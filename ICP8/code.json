@@ -1,0 +1,310 @@
+[
+    {
+        "id": "3cacf01e.84808",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3c7ed6ae.75514a",
+        "type": "arduino in",
+        "z": "3cacf01e.84808",
+        "name": "Light Sensor",
+        "pin": "0",
+        "state": "ANALOG",
+        "arduino": "4390d162.8bfca",
+        "x": 90,
+        "y": 160,
+        "wires": [
+            [
+                "ce8948d.20aecb8"
+            ]
+        ]
+    },
+    {
+        "id": "af335773.d59018",
+        "type": "arduino in",
+        "z": "3cacf01e.84808",
+        "name": "Air Quality",
+        "pin": "1",
+        "state": "ANALOG",
+        "arduino": "4390d162.8bfca",
+        "x": 80,
+        "y": 220,
+        "wires": [
+            [
+                "26b8ce96.b64b12"
+            ]
+        ]
+    },
+    {
+        "id": "734ce01a.d6eca",
+        "type": "http request",
+        "z": "3cacf01e.84808",
+        "name": "ThingSpeak",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "query",
+        "url": "api.thingspeak.com/update?api_key=_MY_API_KEY_",
+        "tls": "4344cc48.076df4",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 650,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5d1ae02d.05692",
+        "type": "template",
+        "z": "3cacf01e.84808",
+        "name": "ThingSpeak payload",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{\n    \"{{thingspeak}}\": \"{{payload}}\"\n}",
+        "output": "json",
+        "x": 440,
+        "y": 300,
+        "wires": [
+            [
+                "734ce01a.d6eca"
+            ]
+        ]
+    },
+    {
+        "id": "5351a570.fa1c0c",
+        "type": "delay",
+        "z": "3cacf01e.84808",
+        "name": "Upload up to 15 msgs/min",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "15",
+        "nbRateUnits": "1",
+        "rateUnits": "minute",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": true,
+        "x": 170,
+        "y": 300,
+        "wires": [
+            [
+                "5d1ae02d.05692",
+                "581a6e76.22c78"
+            ]
+        ]
+    },
+    {
+        "id": "92c4aece.a00f4",
+        "type": "rbe",
+        "z": "3cacf01e.84808",
+        "name": "",
+        "func": "deadbandEq",
+        "gap": "5%",
+        "start": "",
+        "inout": "out",
+        "property": "payload",
+        "x": 600,
+        "y": 220,
+        "wires": [
+            [
+                "5351a570.fa1c0c"
+            ]
+        ]
+    },
+    {
+        "id": "581a6e76.22c78",
+        "type": "template",
+        "z": "3cacf01e.84808",
+        "name": "AdaFruit payload",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "value={{payload}}",
+        "output": "str",
+        "x": 430,
+        "y": 380,
+        "wires": [
+            [
+                "135c41da.5c945e"
+            ]
+        ]
+    },
+    {
+        "id": "ce8948d.20aecb8",
+        "type": "change",
+        "z": "3cacf01e.84808",
+        "name": "set topics",
+        "rules": [
+            {
+                "t": "set",
+                "p": "thingspeak",
+                "pt": "msg",
+                "to": "field4",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "adafruit",
+                "pt": "msg",
+                "to": "light",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 240,
+        "y": 160,
+        "wires": [
+            [
+                "bc675361.43a3b"
+            ]
+        ]
+    },
+    {
+        "id": "26b8ce96.b64b12",
+        "type": "change",
+        "z": "3cacf01e.84808",
+        "name": "set topics",
+        "rules": [
+            {
+                "t": "set",
+                "p": "thingspeak",
+                "pt": "msg",
+                "to": "field1",
+                "tot": "str"
+            },
+            {
+                "t": "set",
+                "p": "adafruit",
+                "pt": "msg",
+                "to": "air-feed",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "3391b684.766f2a"
+            ]
+        ]
+    },
+    {
+        "id": "fa067d79.f9cd2",
+        "type": "http request",
+        "z": "3cacf01e.84808",
+        "name": "AdaFruit",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "body",
+        "url": "io.adafruit.com/api/v2/lvp4b/feeds/{{{adafruit}}}/data",
+        "tls": "4344cc48.076df4",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "x": 820,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "135c41da.5c945e",
+        "type": "change",
+        "z": "3cacf01e.84808",
+        "name": "AdaFruit Auth",
+        "rules": [
+            {
+                "t": "set",
+                "p": "headers",
+                "pt": "msg",
+                "to": "{\"X-AIO-Key\":\"_MY_AIO_KEY_\",\"Content-Type\":\"application/x-www-form-urlencoded\"}",
+                "tot": "json"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 640,
+        "y": 380,
+        "wires": [
+            [
+                "fa067d79.f9cd2"
+            ]
+        ]
+    },
+    {
+        "id": "bc675361.43a3b",
+        "type": "function",
+        "z": "3cacf01e.84808",
+        "name": "Scale to 0-100%",
+        "func": "msg.payload /= 10.24;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 420,
+        "y": 160,
+        "wires": [
+            [
+                "92c4aece.a00f4"
+            ]
+        ]
+    },
+    {
+        "id": "3391b684.766f2a",
+        "type": "function",
+        "z": "3cacf01e.84808",
+        "name": "Convert to PPM",
+        "func": "let rsro = (4 / msg.payload) / (4 / 195);\nmsg.payload = Math.exp(-3.227 * Math.log(rsro) + 1.984);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 400,
+        "y": 220,
+        "wires": [
+            [
+                "92c4aece.a00f4"
+            ]
+        ]
+    },
+    {
+        "id": "4390d162.8bfca",
+        "type": "arduino-board",
+        "z": "",
+        "device": "COM6"
+    },
+    {
+        "id": "4344cc48.076df4",
+        "type": "tls-config",
+        "z": "",
+        "name": "",
+        "cert": "",
+        "key": "",
+        "ca": "",
+        "certname": "",
+        "keyname": "",
+        "caname": "",
+        "servername": "",
+        "verifyservercert": false
+    }
+]
