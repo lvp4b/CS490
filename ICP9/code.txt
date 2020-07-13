@@ -1,0 +1,12 @@
+from datetime import datetime
+import twitter
+import socket
+api = twitter.Api(consumer_key="<ENTER CONSUMER KEY>",
+                  consumer_secret="<ENTER CONSUMER SECRET>",
+                  access_token_key="<ENTER TOKEN KEY>",
+                  access_token_secret="<ENTER TOKEN SECRET KEY>")
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(("0.0.0.0", 25565))
+while True:
+    data, _ = sock.recvfrom(128)
+    print(api.PostUpdate(f"At {datetime.now()}, the stoplight turned {str(data, 'utf-8')}"))
